@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jilijili/http/core/dio_adaptor.dart';
+import 'package:jilijili/http/core/hi_error.dart';
+import 'package:jilijili/http/core/hi_net.dart';
+import 'package:jilijili/http/request/test_request.dart';
+import 'package:jilijili/util/constants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,15 +62,21 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void _incrementCounter() async {
+    TestRequest request = TestRequest();
+
+    request.add("requestPrams", "ddd");
+    request.addHeaders(Constants.headers());
+    try {
+      var result = await DioAdaptor().send(request);
+      print(result);
+    } on NeedAuth catch (e) {
+      print(e);
+    } on NeedLogin catch (e) {
+      print(e);
+    } on HiNetError catch (e) {
+      print(e);
+    }
   }
 
   @override
