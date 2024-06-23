@@ -11,14 +11,14 @@ class DioAdaptor extends HiNetAdaptor {
 
     try {
       switch (request.httpMethod()) {
-        case HttpMethod.GET:
+        case HttpMethod.get:
           response = await Dio().get(request.url(), options: options);
           break;
-        case HttpMethod.DELETE:
+        case HttpMethod.delete:
           response = await Dio()
               .delete(request.url(), data: request.params, options: options);
           break;
-        case HttpMethod.POST:
+        case HttpMethod.post:
           response = await Dio()
               .post(request.url(), data: request.params, options: options);
           break;

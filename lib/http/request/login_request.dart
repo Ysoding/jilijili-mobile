@@ -1,9 +1,9 @@
 import 'package:jilijili/http/request/base_request.dart';
 
-class TestRequest extends BaseRequest {
+class LoginRequest extends BaseRequest {
   @override
   HttpMethod httpMethod() {
-    return HttpMethod.get;
+    return HttpMethod.post;
   }
 
   @override
@@ -13,6 +13,6 @@ class TestRequest extends BaseRequest {
 
   @override
   String path() {
-    return "uapi/test/test";
+    return '/uapi/user/login';
   }
 }

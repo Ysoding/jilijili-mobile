@@ -1,4 +1,7 @@
-enum HttpMethod { GET, POST, DELETE }
+import 'package:jilijili/http/dao/login_dao.dart';
+import 'package:jilijili/util/constants.dart';
+
+enum HttpMethod { get, post, delete }
 
 abstract class BaseRequest {
   // curl -X GET "http://api.devio.org/uapi/test/test?requestPrams=11" -H "accept: */*"
@@ -56,6 +59,14 @@ abstract class BaseRequest {
       uri = Uri.http(authority(), pathStr, params);
     }
 
+    _updateHeader();
     return uri.toString();
+  }
+
+  _updateHeader() {
+    if (needLogin()) {
+      addHeader(LoginDao.boardingPassKey, LoginDao.getBoardingPass() ?? "");
+    }
+    addHeaders(Constants.headers);
   }
 }
