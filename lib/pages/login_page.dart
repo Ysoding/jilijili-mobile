@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jilijili/http/core/hi_error.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
+import 'package:jilijili/navigator/hi_navigator.dart';
 import 'package:jilijili/pages/registration_page.dart';
 import 'package:jilijili/util/string_util.dart';
 import 'package:jilijili/util/toast.dart';
@@ -18,6 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   // jvadd dddd112002
+  // Tom2 123
   bool protected = false;
   bool loginEnable = false;
   String? username;
@@ -40,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
       var result = await LoginDao.login(username!, password!);
       if (result['code'] == 0) {
         showToast("登录成功");
-        // TODO: navigator
+        HiNavigator.getInstance().onJumpTo(RouteStatus.registration);
       } else {
         showWarnToast(result['msg']);
       }
@@ -58,10 +60,7 @@ class _LoginPageState extends State<LoginPage> {
         '登录',
         '注册',
         () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const RegistrationPage()));
+          HiNavigator.getInstance().onJumpTo(RouteStatus.registration);
         },
         key: const Key('registration'),
       ),

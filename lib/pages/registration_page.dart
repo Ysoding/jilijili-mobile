@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jilijili/http/core/hi_error.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
+import 'package:jilijili/navigator/hi_navigator.dart';
 import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/util/string_util.dart';
 import 'package:jilijili/util/toast.dart';
@@ -76,8 +77,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar("注册", "登录", () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const LoginPage()));
+          HiNavigator.getInstance().onJumpTo(RouteStatus.login);
         }),
         body: ListView(children: [
           LoginEffect(protected: protect),
