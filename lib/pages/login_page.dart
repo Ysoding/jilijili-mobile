@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jilijili/http/core/hi_error.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
-import 'package:jilijili/pages/registration_page.dart';
 import 'package:jilijili/util/string_util.dart';
 import 'package:jilijili/util/toast.dart';
 import 'package:jilijili/widgets/appbar.dart';
@@ -42,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
       var result = await LoginDao.login(username!, password!);
       if (result['code'] == 0) {
         showToast("登录成功");
-        HiNavigator.getInstance().onJumpTo(RouteStatus.registration);
+        HiNavigator.getInstance().onJumpTo(RouteStatus.home);
       } else {
         showWarnToast(result['msg']);
       }

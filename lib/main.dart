@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:jilijili/db/hi_cache.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
 import 'package:jilijili/model/video_detail_model.dart';
+import 'package:jilijili/navigator/bottom_navigator.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
-import 'package:jilijili/pages/home_page.dart';
 import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/pages/registration_page.dart';
 import 'package:jilijili/pages/video_detail_page.dart';
@@ -73,7 +71,7 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
         RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
       _routeStatus = routeStatus;
       if (routeStatus == RouteStatus.detail) {
-        this.videoModel = args?['videoMo'];
+        videoModel = args?['videoMo'];
       }
       notifyListeners();
     }));
@@ -98,11 +96,11 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
       tempPages = tempPages.sublist(0, index);
     }
 
-    var page;
+    late MaterialPage page;
     if (routeStatus == RouteStatus.home) {
       // 跳转首页时将栈中其它页面进行出栈，因为首页不可回退
       pages.clear();
-      page = pageWrap(const HomePage());
+      page = pageWrap(const BottomNavigator());
     } else if (routeStatus == RouteStatus.detail) {
       page = pageWrap(VideoDetailPage(
         videoDetailModel: videoModel!,
@@ -115,6 +113,7 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
 
     // 重新创建一个数组，否则pages因引用没有改变路由不会生效
     tempPages = [...tempPages, page];
+    HiNavigator.getInstance().notify(tempPages, pages);
     pages = tempPages;
 
     return PopScope(
@@ -147,8 +146,9 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
               return false;
             }
 
-            // var tempPages = [...pages];
+            var tempPages = [...pages];
             pages.removeLast();
+            HiNavigator.getInstance().notify(pages, tempPages);
 
             return true;
           },

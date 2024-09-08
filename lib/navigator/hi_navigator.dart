@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:jilijili/pages/home_page.dart';
+import 'package:jilijili/navigator/bottom_navigator.dart';
 import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/pages/registration_page.dart';
+import 'package:jilijili/util/logging.dart';
 
 enum RouteStatus { login, registration, home, detail, darkMode, unknown }
+
+typedef RouteChangeListener = void Function(
+    RouteStatusInfo current, RouteStatusInfo? previous);
 
 RouteStatus getRouteStatus(MaterialPage page) {
   if (page.child is LoginPage) {
     return RouteStatus.login;
   } else if (page.child is RegistrationPage) {
     return RouteStatus.registration;
-  } else if (page.child is HomePage) {
+  } else if (page.child is BottomNavigator) {
     return RouteStatus.home;
   } else {
     return RouteStatus.unknown;
@@ -47,6 +51,8 @@ class HiNavigator extends _RouteJumpListener {
 
   RouteStatusInfo? _current;
   RouteJumpListener? _routeJump;
+  RouteStatusInfo? _bottomTab;
+  final List<RouteChangeListener> _listeners = [];
 
   HiNavigator._();
 
@@ -64,9 +70,46 @@ class HiNavigator extends _RouteJumpListener {
     _routeJump?.onJumpTo(routeStatus, args: args);
   }
 
+  /// 首页底部tab切换监听
+  void onBottomTabChange(int index, Widget page) {
+    _bottomTab = RouteStatusInfo(RouteStatus.home, page);
+    _notify(_bottomTab!);
+  }
+
+  /// 监听路由页面跳转
+  void addListener(RouteChangeListener listener) {
+    if (!_listeners.contains(listener)) {
+      _listeners.add(listener);
+    }
+  }
+
+  void removeListener(RouteChangeListener listener) {
+    _listeners.remove(listener);
+  }
+
   /// 注册路由跳转逻辑
   void registerRouteJump(RouteJumpListener routeJumpListener) {
-    this._routeJump = routeJumpListener;
+    _routeJump = routeJumpListener;
+  }
+
+  /// 通知路由页面变化
+  void notify(List<MaterialPage> currentPages, List<MaterialPage> prevPages) {
+    if (currentPages == prevPages) return;
+    var current = RouteStatusInfo(
+        getRouteStatus(currentPages.last), currentPages.last.child);
+    _notify(current);
+  }
+
+  void _notify(RouteStatusInfo current) {
+    if (current.page is BottomNavigator && _bottomTab != null) {
+      current = _bottomTab!;
+    }
+    mainLogger.info("hi_navigator:current:${current.page}");
+    mainLogger.info("hi_navigator:previous:${_current?.page}");
+    for (var listener in _listeners) {
+      listener(current, _current);
+    }
+    _current = current;
   }
 }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jilijili/http/core/hi_error.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
-import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/util/string_util.dart';
 import 'package:jilijili/util/toast.dart';
 import 'package:jilijili/widgets/appbar.dart';
