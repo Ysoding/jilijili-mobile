@@ -2,9 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:jilijili/navigator/bottom_navigator.dart';
 import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/pages/registration_page.dart';
+import 'package:jilijili/pages/video_detail_page.dart';
 import 'package:jilijili/util/logging.dart';
 
-enum RouteStatus { login, registration, home, detail, darkMode, unknown }
+enum RouteStatus {
+  login,
+  registration,
+  home,
+  detail,
+  darkMode,
+  unknown,
+  notice
+}
 
 typedef RouteChangeListener = void Function(
     RouteStatusInfo current, RouteStatusInfo? previous);
@@ -16,6 +25,8 @@ RouteStatus getRouteStatus(MaterialPage page) {
     return RouteStatus.registration;
   } else if (page.child is BottomNavigator) {
     return RouteStatus.home;
+  } else if (page.child is VideoDetailPage) {
+    return RouteStatus.detail;
   } else {
     return RouteStatus.unknown;
   }
