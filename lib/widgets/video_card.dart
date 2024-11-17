@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jilijili/model/home_model.dart';
+import 'package:jilijili/model/video_model.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
 import 'package:jilijili/util/format_util.dart';
 import 'package:jilijili/widgets/view_util.dart';

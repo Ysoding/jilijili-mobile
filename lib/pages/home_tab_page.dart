@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nested/flutter_nested.dart';
 import 'package:jilijili/http/dao/home_dao.dart';
+import 'package:jilijili/model/banner_model.dart';
 import 'package:jilijili/model/home_model.dart';
+import 'package:jilijili/model/video_model.dart';
 import 'package:jilijili/widgets/hi_banner.dart';
 import 'package:jilijili/widgets/hi_base_tab_state.dart';
 import 'package:jilijili/widgets/video_card.dart';

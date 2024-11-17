@@ -5,7 +5,6 @@ import 'package:jilijili/pages/home_page.dart';
 import 'package:jilijili/pages/profile_page.dart';
 import 'package:jilijili/pages/ranking_page.dart';
 import 'package:jilijili/util/color.dart';
-import 'package:jilijili/util/toast.dart';
 
 class BottomNavigator extends StatefulWidget {
   const BottomNavigator({super.key});
@@ -20,17 +19,17 @@ class _BottomNavigatorState extends State<BottomNavigator> {
   int _currentIndex = 0;
   static int initialPage = 0;
   final PageController _controller = PageController(initialPage: initialPage);
-  final List<Widget> _pages = const [
-    HomePage(),
-    RankingPage(),
-    FavoritePage(),
-    ProfilePage()
-  ];
+  List<Widget> _pages = [];
   bool _hasBuild = false;
-  DateTime? _lastPressedAt;
 
   @override
   Widget build(BuildContext context) {
+    _pages = [
+      HomePage(onJumpTo: (index) => _onJumpTo(index)),
+      const RankingPage(),
+      const FavoritePage(),
+      const ProfilePage()
+    ];
     if (!_hasBuild) {
       HiNavigator.getInstance()
           .onBottomTabChange(initialPage, _pages[initialPage]);
@@ -57,17 +56,6 @@ class _BottomNavigatorState extends State<BottomNavigator> {
         ],
       ),
     );
-  }
-
-  bool exitApp() {
-    if (_lastPressedAt == null ||
-        DateTime.now().difference(_lastPressedAt!) >
-            const Duration(seconds: 2)) {
-      showToast("再按一次退出应用");
-      _lastPressedAt = DateTime.now();
-      return false;
-    }
-    return true;
   }
 
   _bottomItem(String titile, IconData icon, int index) {

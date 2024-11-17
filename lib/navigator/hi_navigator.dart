@@ -3,7 +3,6 @@ import 'package:jilijili/navigator/bottom_navigator.dart';
 import 'package:jilijili/pages/login_page.dart';
 import 'package:jilijili/pages/registration_page.dart';
 import 'package:jilijili/pages/video_detail_page.dart';
-import 'package:jilijili/util/logging.dart';
 
 enum RouteStatus {
   login,
@@ -115,8 +114,8 @@ class HiNavigator extends _RouteJumpListener {
     if (current.page is BottomNavigator && _bottomTab != null) {
       current = _bottomTab!;
     }
-    mainLogger.info("hi_navigator:current:${current.page}");
-    mainLogger.info("hi_navigator:previous:${_current?.page}");
+    // mainLogger.info("hi_navigator:current:${current.page}");
+    // mainLogger.info("hi_navigator:previous:${_current?.page}");
     for (var listener in _listeners) {
       listener(current, _current);
     }

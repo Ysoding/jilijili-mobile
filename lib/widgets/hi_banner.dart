@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swipper/flutter_card_swiper.dart';
-import 'package:jilijili/model/home_model.dart';
+import 'package:jilijili/model/banner_model.dart';
 import 'package:jilijili/util/logging.dart';
 
 /// 轮播图

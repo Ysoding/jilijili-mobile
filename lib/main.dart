@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jilijili/db/hi_cache.dart';
 import 'package:jilijili/http/dao/login_dao.dart';
-import 'package:jilijili/model/video_detail_model.dart';
+import 'package:jilijili/model/video_model.dart';
 import 'package:jilijili/navigator/bottom_navigator.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
 import 'package:jilijili/pages/login_page.dart';
@@ -63,7 +63,7 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
   final GlobalKey<NavigatorState> navigatorKey;
   RouteStatus _routeStatus = RouteStatus.home;
   List<MaterialPage> pages = [];
-  VideoDetailModel? videoModel;
+  VideoModel? videoModel;
 
   // 为 Navigator 设置一个 key，必要时可以通过navigatorKey.currentState 来获取到 navigatorState 对象
   JiliRouteDelegate() : navigatorKey = GlobalKey<NavigatorState>() {
@@ -71,7 +71,7 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
         RouteJumpListener(onJumpTo: (RouteStatus routeStatus, {Map? args}) {
       _routeStatus = routeStatus;
       if (routeStatus == RouteStatus.detail) {
-        videoModel = args?['videoMo'];
+        videoModel = args?['videoInfo'];
       }
       notifyListeners();
     }));
@@ -102,9 +102,7 @@ class JiliRouteDelegate extends RouterDelegate<JiliRoutePath>
       pages.clear();
       page = pageWrap(const BottomNavigator());
     } else if (routeStatus == RouteStatus.detail) {
-      page = pageWrap(VideoDetailPage(
-        videoDetailModel: videoModel!,
-      ));
+      page = pageWrap(VideoDetailPage(videoModel));
     } else if (routeStatus == RouteStatus.registration) {
       page = pageWrap(const RegistrationPage());
     } else if (routeStatus == RouteStatus.login) {

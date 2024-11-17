@@ -23,13 +23,13 @@ class HiTab extends StatelessWidget {
 
   const HiTab(
     this.tabs, {
-    Key? key,
+    super.key,
     this.controller,
     this.fontSize = 13,
     this.borderWidth = 2,
     this.insets = 15,
     this.unselectedLabelColor = Colors.grey,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +37,7 @@ class HiTab extends StatelessWidget {
     // var _unselectedLabelColor =
     // themeProvider.isDark() ? Colors.white70 : unselectedLabelColor;
     return TabBar(
+      tabAlignment: TabAlignment.start,
       controller: controller,
       isScrollable: true,
       labelColor: primary,

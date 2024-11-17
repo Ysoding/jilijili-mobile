@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jilijili/widgets/view_util.dart';
 
-enum StatusStyle { light, dark }
+enum StatusStyle { lightContent, darkContent }
 
 class CustomTopNavigationBar extends StatefulWidget {
   final StatusStyle statusStyle;
@@ -10,7 +11,7 @@ class CustomTopNavigationBar extends StatefulWidget {
 
   const CustomTopNavigationBar(
       {super.key,
-      this.statusStyle = StatusStyle.dark,
+      this.statusStyle = StatusStyle.darkContent,
       this.color = Colors.white,
       this.height = 46,
       this.child});
@@ -22,11 +23,12 @@ class CustomTopNavigationBar extends StatefulWidget {
 class _CustomTopNavigationBarState extends State<CustomTopNavigationBar> {
   @override
   Widget build(BuildContext context) {
-    double top = MediaQuery.of(context).padding.top;
+    changeStatusBar(color: widget.color, statusStyle: widget.statusStyle);
 
+    double top = MediaQuery.of(context).padding.top;
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: top + widget.height,
+      height: top == 0 ? 0 : top + widget.height,
       padding: EdgeInsets.only(top: top),
       decoration: BoxDecoration(color: widget.color),
       child: widget.child,

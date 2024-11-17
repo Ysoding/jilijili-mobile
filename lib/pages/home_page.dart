@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:jilijili/http/core/hi_error.dart';
 import 'package:jilijili/http/dao/home_dao.dart';
-import 'package:jilijili/model/home_model.dart';
+import 'package:jilijili/model/banner_model.dart';
+import 'package:jilijili/model/category_model.dart';
 import 'package:jilijili/navigator/hi_navigator.dart';
 import 'package:jilijili/pages/home_tab_page.dart';
-import 'package:jilijili/util/color.dart';
+import 'package:jilijili/pages/profile_page.dart';
+import 'package:jilijili/pages/video_detail_page.dart';
 import 'package:jilijili/util/hi_state.dart';
-import 'package:jilijili/util/logging.dart';
 import 'package:jilijili/util/toast.dart';
 import 'package:jilijili/widgets/custom_navigation_bar.dart';
 import 'package:jilijili/widgets/hi_tab.dart';
 import 'package:jilijili/widgets/loading_container.dart';
 import 'package:jilijili/widgets/view_util.dart';
-import 'package:underline_indicator/underline_indicator.dart';
 
 class HomePage extends StatefulWidget {
   final ValueChanged<int>? onJumpTo;
@@ -41,14 +41,36 @@ class _HomePageState extends HiState<HomePage>
     _tabController = TabController(length: categoryList.length, vsync: this);
 
     HiNavigator.getInstance().addListener(listener = (current, previous) {
-      if (widget == current.page || current.page is HomePage) {
-        mainLogger.info("打开了首页:onResume");
-      } else if (widget == previous?.page || previous?.page is HomePage) {
-        mainLogger.info("离开了首页:onPause");
+      if (previous?.page is VideoDetailPage && current.page is! ProfilePage) {
+        changeStatusBar(
+            color: Colors.white, statusStyle: StatusStyle.darkContent);
       }
     });
 
     loadData();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch (state) {
+      // 处于这种状态的应用程序应该假设它们可能在任何时候暂停。
+      case AppLifecycleState.inactive:
+        break;
+      // 从后台切换前台，界面可见
+      case AppLifecycleState.resumed:
+        // fix Android 压后台首页状态栏字体颜色变白，详情页状态栏字体变黑问题
+        changeStatusBar();
+        break;
+      // 界面不可见，后台
+      case AppLifecycleState.paused:
+        break;
+      // APP 结束时调用
+      case AppLifecycleState.detached:
+        break;
+      case AppLifecycleState.hidden:
+        break;
+    }
   }
 
   @override
@@ -70,7 +92,7 @@ class _HomePageState extends HiState<HomePage>
           CustomTopNavigationBar(
             height: 50,
             color: Colors.white,
-            statusStyle: StatusStyle.dark,
+            statusStyle: StatusStyle.darkContent,
             child: _appBar(),
           ),
           Container(
